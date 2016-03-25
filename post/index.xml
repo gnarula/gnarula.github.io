@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title> </title>
+    <link>http://gnarula.github.io/post/</link>
+    <language>en-us</language>
+    <author>Gaurav Narula</author>
+    <rights>(C) 2016</rights>
+    <updated>2016-03-25 18:58:17 &#43;0530 IST</updated>
+
+    
+      
+        <item>
+          <title>Hello World!</title>
+          <link>http://gnarula.github.io/2016/03/25/hello-world/</link>
+          <pubDate>Fri, 25 Mar 2016 18:58:17 IST</pubDate>
+          <author>Gaurav Narula</author>
+          <guid>http://gnarula.github.io/2016/03/25/hello-world/</guid>
+          <description>&lt;p&gt;It&amp;rsquo;s been a while since I blogged so here&amp;rsquo;s another attempt at it. Posts here
+would usually be about the projects I&amp;rsquo;m working on or on my &lt;del&gt;opinionated&lt;/del&gt;
+workflow ;)&lt;/p&gt;
+
+&lt;p&gt;Hope you guys find something useful here in the days to come!&lt;/p&gt;
+</description>
+        </item>
+      
+    
+
+  </channel>
+</rss>
