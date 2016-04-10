@@ -2,20 +2,108 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title> </title>
-    <link>//gnarula.com/</link>
+    <link>https://gnarula.com/</link>
     <language>en-us</language>
     <author>Gaurav Narula</author>
     <rights>(C) 2016</rights>
-    <updated>2016-03-25 18:58:17 &#43;0530 IST</updated>
+    <updated>2016-04-10 13:02:17 &#43;0530 IST</updated>
 
     
       
         <item>
+          <title>CSRF Attacks in a nutshell</title>
+          <link>https://gnarula.com/2016/04/10/csrf-attacks-in-a-nutshell/</link>
+          <pubDate>Sun, 10 Apr 2016 13:02:17 IST</pubDate>
+          <author>Gaurav Narula</author>
+          <guid>https://gnarula.com/2016/04/10/csrf-attacks-in-a-nutshell/</guid>
+          <description>
+
+&lt;p&gt;Cross Site Request Forgery (CSRF) is something you might have come across if
+you&amp;rsquo;re into web development. Even if you&amp;rsquo;re not, its always good to have an
+idea about how you might be vulnerable to it.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve been working on GNOME Music and ownCloud&amp;rsquo;s music app lately and a
+particular feature required exposing an &lt;a href=&#34;https://github.com/owncloud/music/pull/485&#34;&gt;internal
+endpoint&lt;/a&gt;. This post is largely
+inspired by ownCloud&amp;rsquo;s sophisticated design to prevent CSRF attacks.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;In a CSRF attack, a malicious website attempts to impersonate your identity on
+a target website by sending requests on your behalf to its advantage.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Imagine a  scenario where you&amp;rsquo;re an active user of &lt;code&gt;vulnerablehost.com&lt;/code&gt;, a
+music player which uses an endpoint like
+&lt;code&gt;http://vulnerablehost.com/add/music/?url=&amp;lt;url_to_file&amp;gt;&lt;/code&gt; to enqueue music to
+the playlist. While relatively unharmful at first, what if you happen to visit
+another site &lt;code&gt;evilintents.com&lt;/code&gt; which hides among other things, something as
+frivolous as&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;img src=&amp;quot;http://vulnerablehost.com/add/music?url=&amp;lt;evil hosts music taste&amp;gt;&amp;quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your browser would just pass on the request and append evilhost&amp;rsquo;s music to
+your playlist. You might wonder if &lt;code&gt;vulnerablehost.com&lt;/code&gt; could have made the endpoint
+accessible only via a POST request to circumvent the attack. The only problem
+is, crafty &lt;code&gt;evilintents.com&lt;/code&gt; can probably fool you into submitting a form with
+the target pointing to the former&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- On evilintents.com, a seemingly harmless form --&amp;gt;
+&amp;lt;form action=&amp;quot;http://vulnerablehost.com/add/music&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt;
+    &amp;lt;label for=&amp;quot;id&amp;quot;&amp;gt;ID&amp;lt;/label&amp;gt;
+    &amp;lt;input name=&amp;quot;id&amp;quot; type=&amp;quot;text&amp;quot;&amp;gt;
+    &amp;lt;input type=&amp;quot;submit&amp;quot;&amp;gt;
+    &amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;url&amp;quot; value=&amp;quot;&amp;lt;evil hosts music taste&amp;gt;&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To understand the possible implications of the attack, reconsider
+&lt;code&gt;vulnerablehost.com&lt;/code&gt; as your banking website with an endpoint to transfer funds
+to a benficiary.&lt;/p&gt;
+
+&lt;h2 id=&#34;prevention:ecec67f2f40c7f982e7f00401614480c&#34;&gt;Prevention&lt;/h2&gt;
+
+&lt;p&gt;Fortunately, there is a way to prevent CSRF attacks on endpoints by requiring
+requests to contain data that only you, the client and the server would know
+and there is no way for &lt;code&gt;evilintents.com&lt;/code&gt; to figure it out. This is often
+referred to as a CSRF token, which is hidden along with your POST request and
+enables &lt;code&gt;nonvulnerablehost.com&lt;/code&gt; to ensure the requests are not send
+inadvertently.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!-- Forms on nonvulnerablehost.com --&amp;gt;
+&amp;lt;form action=&amp;quot;http://nonvulnerablehost.com/add/music&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt;
+    &amp;lt;label for=&amp;quot;url&amp;quot;&amp;gt;URL:&amp;lt;/label&amp;gt;
+    &amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;url&amp;quot;&amp;gt;
+    &amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;csrftoken&amp;quot; value=&amp;quot;randomvalueknownbyserver&amp;quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the above scenario, there is no way for &lt;code&gt;evilintents.com&lt;/code&gt; to guess the value
+of &lt;code&gt;csrftoken&lt;/code&gt; that is checked on every form submission at
+&lt;code&gt;nonvulnerablehost.com&lt;/code&gt;, thereby rendering CSRF attacks useless :) Many
+web frameworks are bundled with CSRF Middlewares that do the check on every
+POST request automatically and mitigate the attack.&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion:ecec67f2f40c7f982e7f00401614480c&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Theoretically, CSRF attacks are not hard to defend against, but practically
+developers often overlook
+&lt;a href=&#34;http://pouyadarabi.blogspot.in/2015/04/bypass-facebook-csrf.html&#34;&gt;possible&lt;/a&gt;
+&lt;a href=&#34;https://bounty.github.com/classifications/cross-site-request-forgery.html&#34;&gt;situations&lt;/a&gt;.
+It&amp;rsquo;s not hard to look around for possible CSRF vulnerabilities. While attacks
+are rarely in jest, if you&amp;rsquo;re a BITSGian, logged in via Cyberoam,
+chances are you&amp;rsquo;ll have to login again ;)&lt;/p&gt;
+</description>
+        </item>
+      
+    
+      
+        <item>
           <title>Hello World!</title>
-          <link>//gnarula.com/2016/03/25/hello-world/</link>
+          <link>https://gnarula.com/2016/03/25/hello-world/</link>
           <pubDate>Fri, 25 Mar 2016 18:58:17 IST</pubDate>
           <author>Gaurav Narula</author>
-          <guid>//gnarula.com/2016/03/25/hello-world/</guid>
+          <guid>https://gnarula.com/2016/03/25/hello-world/</guid>
           <description>&lt;p&gt;It&amp;rsquo;s been a while since I blogged so here&amp;rsquo;s another attempt at it. Posts here
 would usually be about the projects I&amp;rsquo;m working on or on my &lt;del&gt;opinionated&lt;/del&gt;
 workflow ;)&lt;/p&gt;

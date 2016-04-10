@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title> </title>
-    <link>https://gnarula.com/post/</link>
+    <link>https://gnarula.com/categories/security/</link>
     <language>en-us</language>
     <author>Gaurav Narula</author>
     <rights>(C) 2016</rights>
@@ -93,22 +93,6 @@ developers often overlook
 It&amp;rsquo;s not hard to look around for possible CSRF vulnerabilities. While attacks
 are rarely in jest, if you&amp;rsquo;re a BITSGian, logged in via Cyberoam,
 chances are you&amp;rsquo;ll have to login again ;)&lt;/p&gt;
-</description>
-        </item>
-      
-    
-      
-        <item>
-          <title>Hello World!</title>
-          <link>https://gnarula.com/2016/03/25/hello-world/</link>
-          <pubDate>Fri, 25 Mar 2016 18:58:17 IST</pubDate>
-          <author>Gaurav Narula</author>
-          <guid>https://gnarula.com/2016/03/25/hello-world/</guid>
-          <description>&lt;p&gt;It&amp;rsquo;s been a while since I blogged so here&amp;rsquo;s another attempt at it. Posts here
-would usually be about the projects I&amp;rsquo;m working on or on my &lt;del&gt;opinionated&lt;/del&gt;
-workflow ;)&lt;/p&gt;
-
-&lt;p&gt;Hope you guys find something useful here in the days to come!&lt;/p&gt;
 </description>
         </item>
       
