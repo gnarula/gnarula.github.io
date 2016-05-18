@@ -6,8 +6,28 @@
     <language>en-us</language>
     <author>Gaurav Narula</author>
     <rights>(C) 2016</rights>
-    <updated>2016-04-10 13:02:17 &#43;0530 IST</updated>
+    <updated>2016-05-18 16:27:48 &#43;0530 IST</updated>
 
+    
+      
+        <item>
+          <title>GSoC 2016 Introduction</title>
+          <link>https://gnarula.com/2016/05/18/gsoc-2016-introduction/</link>
+          <pubDate>Wed, 18 May 2016 16:27:48 IST</pubDate>
+          <author>Gaurav Narula</author>
+          <guid>https://gnarula.com/2016/05/18/gsoc-2016-introduction/</guid>
+          <description>&lt;p&gt;Hi everyone! My name&amp;rsquo;s Gaurav Narula and I&amp;rsquo;m a third year undergrad student at &lt;a href=&#34;http://www.bits-pilani.ac.in/Goa/&#34;&gt;BITS Pilani K.K. Birla Goa Campus&lt;/a&gt;. I&amp;rsquo;m pursuing a double major in Economics and Computer Science.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve been using GNOME since a long time - the first instance I recall is when I got a Live CD of Ubuntu 6.10 via ShipIt. GNOME&amp;rsquo;s evolved a lot since then and has still remained my go to DE over all these years. I started with GTK+ development rather recently, with some contributions to &lt;a href=&#34;https://github.com/gnome-mpv/gnome-mpv&#34;&gt;gnome-mpv&lt;/a&gt;, a GTK+ frontend for the MPV Media Player around October 2015.&lt;/p&gt;
+
+&lt;p&gt;A few months later, I stumbled upon &lt;a href=&#34;https://wiki.gnome.org/Apps/Music&#34;&gt;GNOME Music&lt;/a&gt; while searching for a new music player and it soon became my default music player. I then decided to become more involved with the project. I dived into its source and tried to fix some small bugs around February with assistance from &lt;a href=&#34;https://wiki.gnome.org/FelipeBorges&#34;&gt;Felipe Borges&lt;/a&gt;, &lt;a href=&#34;https://wiki.gnome.org/VictorToso&#34;&gt;Victor Toso&lt;/a&gt; and &lt;a href=&#34;https://wiki.gnome.org/CarlosGarnacho&#34;&gt;Carlos Garnacho&lt;/a&gt; all along.&lt;/p&gt;
+
+&lt;p&gt;Coming to my project, GNOME Music currently only allows access to one&amp;rsquo;s local music collection. Over the past few years, GNOME apps have integrated well with &lt;a href=&#34;https://owncloud.org/&#34;&gt;ownCloud&lt;/a&gt; to sync and retrieve files stored remotely and Music shouldn&amp;rsquo;t be an exception to the same :) The goal of the project is to allow playing and searching ones music collection over ownCloud. ownCloud&amp;rsquo;s &lt;a href=&#34;https://github.com/owncloud/music&#34;&gt;music app&lt;/a&gt; exposes an Ampache API which will be used to develop a Grilo Plugin to allow remote media discovery in Music. Victor&amp;rsquo;s work in &lt;a href=&#34;https://wiki.gnome.org/Outreach/SummerOfCode/2013/Projects/VictorToso_LuaGriloPlugins&#34;&gt;GSoC 2013&lt;/a&gt; would allow writing the plugin in LUA and will be of great help to quickly get things working. Recent changes in ownCloud&amp;rsquo;s music App with help from &lt;a href=&#34;http://morrisjobke.de/&#34;&gt;Moris Jobke&lt;/a&gt; have set the stage and I can&amp;rsquo;t wait to begin work!&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m fortunate to have Felipe Borges (GNOME) and &lt;a href=&#34;https://statuscode.ch/&#34;&gt;Lukas Reschke&lt;/a&gt; (ownCloud) as my mentors along with many other people from both the organisations who&amp;rsquo;ve helped me all along. Looking forward to an exciting summer ahead! Stay tuned for more updates :)&lt;/p&gt;
+</description>
+        </item>
+      
     
       
         <item>

