@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      CSRF Attacks in a nutshell &middot; Gaurav's Blog
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>Musings on Programming</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
+    <a class="sidebar-nav-item" href="https://github.com/gnarula">GitHub</a>
+    <a class="sidebar-nav-item" href="https://in.linkedin.com/in/gaurav-narula-b347747a">LinkedIn</a>
+    <a class="sidebar-nav-item" href="https://facebook.com/gnarula94">Facebook</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2016. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Gaurav's Blog</a>
+            <small>Musings on Programming</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">CSRF Attacks in a nutshell</h1>
+  <span class="post-date">10 Apr 2016 |
+    
+    <a href="/categories/security">Security</a>
+    
+  </span>
+  <p>Cross Site Request Forgery (CSRF) is something you might have come across if
+you’re into web development. Even if you’re not, its always good to have an
+idea about how you might be vulnerable to it.</p>
+
+<p>I’ve been working on GNOME Music and ownCloud’s music app lately and a
+particular feature required exposing an <a href="https://github.com/owncloud/music/pull/485">internal
+endpoint</a>. This post is largely
+inspired by ownCloud’s sophisticated design to prevent CSRF attacks.
+<!--more--></p>
+
+<blockquote>
+  <p>In a CSRF attack, a malicious website attempts to impersonate your identity on
+a target website by sending requests on your behalf to its advantage.</p>
+</blockquote>
+
+<p>Imagine a  scenario where you’re an active user of <code class="highlighter-rouge">vulnerablehost.com</code>, a
+music player which uses an endpoint like
+<code class="highlighter-rouge">http://vulnerablehost.com/add/music/?url=&lt;url_to_file&gt;</code> to enqueue music to
+the playlist. While relatively unharmful at first, what if you happen to visit
+another site <code class="highlighter-rouge">evilintents.com</code> which hides among other things, something as
+frivolous as</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"http://vulnerablehost.com/add/music?url=&lt;evil hosts music taste&gt;"</span><span class="nt">&gt;</span>
+</code></pre>
+</div>
+
+<p>Your browser would just pass on the request and append evilhost’s music to
+your playlist. You might wonder if <code class="highlighter-rouge">vulnerablehost.com</code> could have made the endpoint
+accessible only via a POST request to circumvent the attack. The only problem
+is, crafty <code class="highlighter-rouge">evilintents.com</code> can probably fool you into submitting a form with
+the target pointing to the former</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- On evilintents.com, a seemingly harmless form --&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"http://vulnerablehost.com/add/music"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"id"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"id"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"url"</span> <span class="na">value=</span><span class="s">"&lt;evil hosts music taste&gt;"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+</div>
+
+<p>To understand the possible implications of the attack, reconsider
+<code class="highlighter-rouge">vulnerablehost.com</code> as your banking website with an endpoint to transfer funds
+to a benficiary.</p>
+
+<h2 id="prevention">Prevention</h2>
+
+<p>Fortunately, there is a way to prevent CSRF attacks on endpoints by requiring
+requests to contain data that only you, the client and the server would know
+and there is no way for <code class="highlighter-rouge">evilintents.com</code> to figure it out. This is often
+referred to as a CSRF token, which is hidden along with your POST request and
+enables <code class="highlighter-rouge">nonvulnerablehost.com</code> to ensure the requests are not send
+inadvertently.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- Forms on nonvulnerablehost.com --&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"http://nonvulnerablehost.com/add/music"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"url"</span><span class="nt">&gt;</span>URL:<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"url"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"csrftoken"</span> <span class="na">value=</span><span class="s">"randomvalueknownbyserver"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+</div>
+
+<p>In the above scenario, there is no way for <code class="highlighter-rouge">evilintents.com</code> to guess the value
+of <code class="highlighter-rouge">csrftoken</code> that is checked on every form submission at
+<code class="highlighter-rouge">nonvulnerablehost.com</code>, thereby rendering CSRF attacks useless :) Many
+web frameworks are bundled with CSRF Middlewares that do the check on every
+POST request automatically and mitigate the attack.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Theoretically, CSRF attacks are not hard to defend against, but practically
+developers often overlook
+<a href="http://pouyadarabi.blogspot.in/2015/04/bypass-facebook-csrf.html">possible</a>
+<a href="https://bounty.github.com/classifications/cross-site-request-forgery.html">situations</a>.
+It’s not hard to look around for possible CSRF vulnerabilities. While attacks
+are rarely in jest, if you’re a BITSGian, logged in via Cyberoam,
+chances are you’ll have to login again ;)</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/gnome/gsoc/goa-extending-owncloud-provider/">
+            GNOME Online Accounts: Extending the ownCloud Provider
+            <small>07 Jun 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/gnome/gsoc/gsoc-introduction/">
+            GSoC 2016 Introduction
+            <small>18 May 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/hello-world/">
+            Hello World!
+            <small>25 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    // Don't ever inject Disqus on localhost--it creates unwanted
+    // discussions from 'localhost' on your Disqus account...
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'narula';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

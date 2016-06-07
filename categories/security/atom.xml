@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Security | Gaurav's Blog]]></title>
+  <link href="https://gnarula.com/categories/security/atom.xml" rel="self"/>
+  <link href="https://gnarula.com/"/>
+  <updated>2016-06-07T19:12:02+05:30</updated>
+  <id>https://gnarula.com/</id>
+  <author>
+    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://twitter.com/gnarula94", "email"=>"gnarula94@gmail.com"}]]></name>
+    
+  </author>
+  <generator uri="https://github.com/recurser/jekyll-plugins">Recurser</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CSRF Attacks in a nutshell]]></title>
+    <link href="https://gnarula.com/security/csrf/"/>
+    <updated>2016-04-10T13:02:17+05:30</updated>
+    <id>https://gnarula.com/security/csrf</id>
+    <content type="html"><![CDATA[<p>Cross Site Request Forgery (CSRF) is something you might have come across if
+you’re into web development. Even if you’re not, its always good to have an
+idea about how you might be vulnerable to it.</p>
+
+<p>I’ve been working on GNOME Music and ownCloud’s music app lately and a
+particular feature required exposing an <a href="https://github.com/owncloud/music/pull/485">internal
+endpoint</a>. This post is largely
+inspired by ownCloud’s sophisticated design to prevent CSRF attacks.
+<!--more--></p>
+
+<blockquote>
+  <p>In a CSRF attack, a malicious website attempts to impersonate your identity on
+a target website by sending requests on your behalf to its advantage.</p>
+</blockquote>
+
+<p>Imagine a  scenario where you’re an active user of <code class="highlighter-rouge">vulnerablehost.com</code>, a
+music player which uses an endpoint like
+<code class="highlighter-rouge">http://vulnerablehost.com/add/music/?url=&lt;url_to_file&gt;</code> to enqueue music to
+the playlist. While relatively unharmful at first, what if you happen to visit
+another site <code class="highlighter-rouge">evilintents.com</code> which hides among other things, something as
+frivolous as</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"http://vulnerablehost.com/add/music?url=&lt;evil hosts music taste&gt;"</span><span class="nt">&gt;</span>
+</code></pre>
+</div>
+
+<p>Your browser would just pass on the request and append evilhost’s music to
+your playlist. You might wonder if <code class="highlighter-rouge">vulnerablehost.com</code> could have made the endpoint
+accessible only via a POST request to circumvent the attack. The only problem
+is, crafty <code class="highlighter-rouge">evilintents.com</code> can probably fool you into submitting a form with
+the target pointing to the former</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- On evilintents.com, a seemingly harmless form --&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"http://vulnerablehost.com/add/music"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"id"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"id"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"url"</span> <span class="na">value=</span><span class="s">"&lt;evil hosts music taste&gt;"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+</div>
+
+<p>To understand the possible implications of the attack, reconsider
+<code class="highlighter-rouge">vulnerablehost.com</code> as your banking website with an endpoint to transfer funds
+to a benficiary.</p>
+
+<h2 id="prevention">Prevention</h2>
+
+<p>Fortunately, there is a way to prevent CSRF attacks on endpoints by requiring
+requests to contain data that only you, the client and the server would know
+and there is no way for <code class="highlighter-rouge">evilintents.com</code> to figure it out. This is often
+referred to as a CSRF token, which is hidden along with your POST request and
+enables <code class="highlighter-rouge">nonvulnerablehost.com</code> to ensure the requests are not send
+inadvertently.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- Forms on nonvulnerablehost.com --&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"http://nonvulnerablehost.com/add/music"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"url"</span><span class="nt">&gt;</span>URL:<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"url"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"csrftoken"</span> <span class="na">value=</span><span class="s">"randomvalueknownbyserver"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+</div>
+
+<p>In the above scenario, there is no way for <code class="highlighter-rouge">evilintents.com</code> to guess the value
+of <code class="highlighter-rouge">csrftoken</code> that is checked on every form submission at
+<code class="highlighter-rouge">nonvulnerablehost.com</code>, thereby rendering CSRF attacks useless :) Many
+web frameworks are bundled with CSRF Middlewares that do the check on every
+POST request automatically and mitigate the attack.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Theoretically, CSRF attacks are not hard to defend against, but practically
+developers often overlook
+<a href="http://pouyadarabi.blogspot.in/2015/04/bypass-facebook-csrf.html">possible</a>
+<a href="https://bounty.github.com/classifications/cross-site-request-forgery.html">situations</a>.
+It’s not hard to look around for possible CSRF vulnerabilities. While attacks
+are rarely in jest, if you’re a BITSGian, logged in via Cyberoam,
+chances are you’ll have to login again ;)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -11,7 +11,7 @@
 
   <title>
     
-      Gaurav's Blog &middot; Musings on Programming
+      GNOME Online Accounts: Extending the ownCloud Provider &middot; Gaurav's Blog
     
   </title>
 
@@ -110,24 +110,16 @@
       </div>
 
       <div class="container content">
-        <div class="posts">
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/gnome/gsoc/goa-extending-owncloud-provider/">
-        GNOME Online Accounts: Extending the ownCloud Provider
-      </a>
-    </h1>
-
-    <span class="post-date">07 Jun 2016 |
+        <div class="post">
+  <h1 class="post-title">GNOME Online Accounts: Extending the ownCloud Provider</h1>
+  <span class="post-date">07 Jun 2016 |
     
     <a href="/categories/gnome">GNOME</a>
     
     <a href="/categories/gsoc">GSoC</a>
     
-    </span>
-
-    <p>GNOME Online Accounts (GOA) has had support for ownCloud since quite some time. As a part of my project, I’ve been extending the ownCloud provider to add support for the Music feature.</p>
+  </span>
+  <p>GNOME Online Accounts (GOA) has had support for ownCloud since quite some time. As a part of my project, I’ve been extending the ownCloud provider to add support for the Music feature.</p>
 
 <p><img src="http://i.imgur.com/6MXnHA2.png" alt="GOA ownCloud" /></p>
 
@@ -151,103 +143,59 @@
 
 <p>Now that GOA supports storing the Ampache API credentials, we can retrieve and use them for the implementation of a <a href="https://bugzilla.gnome.org/show_bug.cgi?id=676366">grilo plugin</a>. The Lua-factory plugin allows writing Grilo sources in LUA and I’ve recently extended it to support password based GOA accounts. In the coming week, I plan to work on the lua plugin for ownCloud/Ampache.</p>
 
-    
-    
-    
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/gnome/gsoc/gsoc-introduction/">
-        GSoC 2016 Introduction
-      </a>
-    </h1>
-
-    <span class="post-date">18 May 2016 |
-    
-    <a href="/categories/gnome">GNOME</a>
-    
-    <a href="/categories/gsoc">GSoC</a>
-    
-    </span>
-
-    <p>Hi everyone! My name’s Gaurav Narula and I’m a third year undergrad student at <a href="http://www.bits-pilani.ac.in/Goa/">BITS Pilani K.K. Birla Goa Campus</a>. I’m pursuing a double major in Economics and Computer Science.</p>
-
-<p>I’ve been using GNOME since a long time - the first instance I recall is when I got a Live CD of Ubuntu 6.10 via ShipIt. GNOME’s evolved a lot since then and has still remained my go to DE over all these years. I started with GTK+ development rather recently, with some contributions to <a href="https://github.com/gnome-mpv/gnome-mpv">gnome-mpv</a>, a GTK+ frontend for the MPV Media Player around October 2015.</p>
-
-<p>A few months later, I stumbled upon <a href="https://wiki.gnome.org/Apps/Music">GNOME Music</a> while searching for a new music player and it soon became my default music player. I then decided to become more involved with the project. I dived into its source and tried to fix some small bugs around February with assistance from <a href="https://wiki.gnome.org/FelipeBorges">Felipe Borges</a>, <a href="https://wiki.gnome.org/VictorToso">Victor Toso</a> and <a href="https://wiki.gnome.org/CarlosGarnacho">Carlos Garnacho</a> all along.</p>
-
-<p>Coming to my project, GNOME Music currently only allows access to one’s local music collection. Over the past few years, GNOME apps have integrated well with <a href="https://owncloud.org/">ownCloud</a> to sync and retrieve files stored remotely and Music shouldn’t be an exception to the same :) The goal of the project is to allow playing and searching ones music collection over ownCloud. ownCloud’s <a href="https://github.com/owncloud/music">music app</a> exposes an Ampache API which will be used to develop a Grilo Plugin to allow remote media discovery in Music. Victor’s work in <a href="https://wiki.gnome.org/Outreach/SummerOfCode/2013/Projects/VictorToso_LuaGriloPlugins">GSoC 2013</a> would allow writing the plugin in LUA and will be of great help to quickly get things working. Recent changes in ownCloud’s music App with help from <a href="http://morrisjobke.de/">Moris Jobke</a> have set the stage and I can’t wait to begin work!</p>
-
-<p>I’m fortunate to have Felipe Borges (GNOME) and <a href="https://statuscode.ch/">Lukas Reschke</a> (ownCloud) as my mentors along with many other people from both the organisations who’ve helped me all along. Looking forward to an exciting summer ahead! Stay tuned for more updates :)</p>
-
-    
-    
-    
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/security/csrf/">
-        CSRF Attacks in a nutshell
-      </a>
-    </h1>
-
-    <span class="post-date">10 Apr 2016 |
-    
-    <a href="/categories/security">Security</a>
-    
-    </span>
-
-    <p>Cross Site Request Forgery (CSRF) is something you might have come across if
-you’re into web development. Even if you’re not, its always good to have an
-idea about how you might be vulnerable to it.</p>
-
-<p>I’ve been working on GNOME Music and ownCloud’s music app lately and a
-particular feature required exposing an <a href="https://github.com/owncloud/music/pull/485">internal
-endpoint</a>. This post is largely
-inspired by ownCloud’s sophisticated design to prevent CSRF attacks.</p>
-
-
-    
-    
-    
-    <p><a href="/security/csrf/" role="button">Read more</a></p>
-    
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/hello-world/">
-        Hello World!
-      </a>
-    </h1>
-
-    <span class="post-date">25 Mar 2016 |
-    
-    </span>
-
-    <p>It’s been a while since I blogged so here’s another attempt at it. Posts here
-would usually be about the projects I’m working on or on my <del>opinionated</del>
-workflow ;)</p>
-
-<p>Hope you guys find something useful here in the days to come!</p>
-
-    
-    
-    
-  </div>
-  
 </div>
 
-<div class="pagination">
-  
-    <span class="pagination-item older">Older</span>
-  
-  
-    <span class="pagination-item newer">Newer</span>
-  
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/gnome/gsoc/gsoc-introduction/">
+            GSoC 2016 Introduction
+            <small>18 May 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/security/csrf/">
+            CSRF Attacks in a nutshell
+            <small>10 Apr 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/hello-world/">
+            Hello World!
+            <small>25 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
 </div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    // Don't ever inject Disqus on localhost--it creates unwanted
+    // discussions from 'localhost' on your Disqus account...
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'narula';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
       </div>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GSoC | Gaurav's Blog]]></title>
+  <link href="https://gnarula.com/categories/gsoc/atom.xml" rel="self"/>
+  <link href="https://gnarula.com/"/>
+  <updated>2016-06-07T19:12:02+05:30</updated>
+  <id>https://gnarula.com/</id>
+  <author>
+    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://twitter.com/gnarula94", "email"=>"gnarula94@gmail.com"}]]></name>
+    
+  </author>
+  <generator uri="https://github.com/recurser/jekyll-plugins">Recurser</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GNOME Online Accounts: Extending the ownCloud Provider]]></title>
+    <link href="https://gnarula.com/gnome/gsoc/goa-extending-owncloud-provider/"/>
+    <updated>2016-06-07T01:17:24+05:30</updated>
+    <id>https://gnarula.com/gnome/gsoc/goa-extending-owncloud-provider</id>
+    <content type="html"><![CDATA[<p>GNOME Online Accounts (GOA) has had support for ownCloud since quite some time. As a part of my project, I’ve been extending the ownCloud provider to add support for the Music feature.</p>
+
+<p><img src="http://i.imgur.com/6MXnHA2.png" alt="GOA ownCloud" /></p>
+
+<p>ownCloud provides a neat <a href="https://github.com/owncloud/music">music app</a> which allows users to access their music collection, while at the same time, it provides application developers with a rich <a href="https://github.com/ampache/ampache/wiki/XML-API">API</a>. The Ampache API rightly supports authentication and requires a password to be generated which is distinct from the user’s ownCloud credentials.</p>
+
+<p><img src="http://i.imgur.com/KGPp3cg.png" alt="ownCloud Music Generate Password" /></p>
+
+<p>While one can manually generate a password for the Ampache API via ownCloud’s settings, we decided it would be better to automatically generate the password when the user sets up the ownCloud account on GOA for the first time, and store it along with the ownCloud credentials in the Keyring. This meant extending ownCloud’s music app to provide some endpoints for password generation (to be covered in detail in another post).</p>
+
+<p>Since ownCloud’s music app isn’t a part of ownCloud core, there were a few special cases that needed attention:</p>
+
+<ul>
+  <li>If the music app isn’t enabled on ownCloud’s end, the music feature is disabled.</li>
+  <li>In case the music app is disabled after the the password has been generated, <a href="https://developer.gnome.org/goa/stable/gdbus-org.gnome.OnlineAccounts.Account.html#gdbus-method-org-gnome-OnlineAccounts-Account.EnsureCredentials">EnsureCredentials</a> would return failure.</li>
+  <li>A new method, RetryFeature will be available on the <a href="https://developer.gnome.org/goa/stable/gdbus-org.gnome.OnlineAccounts.Account.html">Account Interface</a> which would allow the user to enable Music feature at a later time, in case ownCloud’s music app was not available initially.</li>
+</ul>
+
+<p>The code for the above mentioned features is <a href="https://bugzilla.gnome.org/show_bug.cgi?id=753415">being reviewed</a> and should hopefully be merged soon :)</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>Now that GOA supports storing the Ampache API credentials, we can retrieve and use them for the implementation of a <a href="https://bugzilla.gnome.org/show_bug.cgi?id=676366">grilo plugin</a>. The Lua-factory plugin allows writing Grilo sources in LUA and I’ve recently extended it to support password based GOA accounts. In the coming week, I plan to work on the lua plugin for ownCloud/Ampache.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2016 Introduction]]></title>
+    <link href="https://gnarula.com/gnome/gsoc/gsoc-introduction/"/>
+    <updated>2016-05-18T16:27:48+05:30</updated>
+    <id>https://gnarula.com/gnome/gsoc/gsoc-introduction</id>
+    <content type="html"><![CDATA[<p>Hi everyone! My name’s Gaurav Narula and I’m a third year undergrad student at <a href="http://www.bits-pilani.ac.in/Goa/">BITS Pilani K.K. Birla Goa Campus</a>. I’m pursuing a double major in Economics and Computer Science.</p>
+
+<p>I’ve been using GNOME since a long time - the first instance I recall is when I got a Live CD of Ubuntu 6.10 via ShipIt. GNOME’s evolved a lot since then and has still remained my go to DE over all these years. I started with GTK+ development rather recently, with some contributions to <a href="https://github.com/gnome-mpv/gnome-mpv">gnome-mpv</a>, a GTK+ frontend for the MPV Media Player around October 2015.</p>
+
+<p>A few months later, I stumbled upon <a href="https://wiki.gnome.org/Apps/Music">GNOME Music</a> while searching for a new music player and it soon became my default music player. I then decided to become more involved with the project. I dived into its source and tried to fix some small bugs around February with assistance from <a href="https://wiki.gnome.org/FelipeBorges">Felipe Borges</a>, <a href="https://wiki.gnome.org/VictorToso">Victor Toso</a> and <a href="https://wiki.gnome.org/CarlosGarnacho">Carlos Garnacho</a> all along.</p>
+
+<p>Coming to my project, GNOME Music currently only allows access to one’s local music collection. Over the past few years, GNOME apps have integrated well with <a href="https://owncloud.org/">ownCloud</a> to sync and retrieve files stored remotely and Music shouldn’t be an exception to the same :) The goal of the project is to allow playing and searching ones music collection over ownCloud. ownCloud’s <a href="https://github.com/owncloud/music">music app</a> exposes an Ampache API which will be used to develop a Grilo Plugin to allow remote media discovery in Music. Victor’s work in <a href="https://wiki.gnome.org/Outreach/SummerOfCode/2013/Projects/VictorToso_LuaGriloPlugins">GSoC 2013</a> would allow writing the plugin in LUA and will be of great help to quickly get things working. Recent changes in ownCloud’s music App with help from <a href="http://morrisjobke.de/">Moris Jobke</a> have set the stage and I can’t wait to begin work!</p>
+
+<p>I’m fortunate to have Felipe Borges (GNOME) and <a href="https://statuscode.ch/">Lukas Reschke</a> (ownCloud) as my mentors along with many other people from both the organisations who’ve helped me all along. Looking forward to an exciting summer ahead! Stay tuned for more updates :)</p>
+]]></content>
+  </entry>
+  
+</feed>
