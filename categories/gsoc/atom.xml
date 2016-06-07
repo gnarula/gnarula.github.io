@@ -4,10 +4,10 @@
   <title><![CDATA[Category: GSoC | Gaurav's Blog]]></title>
   <link href="https://gnarula.com/categories/gsoc/atom.xml" rel="self"/>
   <link href="https://gnarula.com/"/>
-  <updated>2016-06-07T19:12:02+05:30</updated>
+  <updated>2016-06-07T19:24:34+05:30</updated>
   <id>https://gnarula.com/</id>
   <author>
-    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://twitter.com/gnarula94", "email"=>"gnarula94@gmail.com"}]]></name>
+    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://gnarula.com", "email"=>"gnarula94@gmail.com"}]]></name>
     
   </author>
   <generator uri="https://github.com/recurser/jekyll-plugins">Recurser</generator>
