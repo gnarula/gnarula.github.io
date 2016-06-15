@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: GNOME | Gaurav's Blog]]></title>
+  <title>Category: GNOME | Gaurav&#39;s Blog</title>
   <link href="https://gnarula.com/categories/gnome/index.xml" rel="self"/>
   <link href="https://gnarula.com/"/>
-  <updated>2016-06-10T15:27:23+05:30</updated>
+  <updated>2016-06-15T15:41:53+05:30</updated>
   <id>https://gnarula.com/</id>
   <author>
-    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://gnarula.com", "email"=>"gnarula94@gmail.com"}]]></name>
-    
+    <name>Gaurav Narula</name>
+    <email>gnarula94@gmail.com</email>
   </author>
   <generator uri="https://github.com/recurser/jekyll-plugins">Recurser</generator>
 
   
   <entry>
-    <title type="html"><![CDATA[GNOME Online Accounts: Extending the ownCloud Provider]]></title>
+    <title>GNOME Online Accounts: Extending the ownCloud Provider</title>
     <link href="https://gnarula.com/gnome/gsoc/goa-extending-owncloud-provider/"/>
     <updated>2016-06-07T01:17:24+05:30</updated>
     <id>https://gnarula.com/gnome/gsoc/goa-extending-owncloud-provider</id>
@@ -45,7 +45,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[GSoC 2016 Introduction]]></title>
+    <title>GSoC 2016 Introduction</title>
     <link href="https://gnarula.com/gnome/gsoc/gsoc-introduction/"/>
     <updated>2016-05-18T16:27:48+05:30</updated>
     <id>https://gnarula.com/gnome/gsoc/gsoc-introduction</id>

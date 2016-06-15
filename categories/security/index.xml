@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Security | Gaurav's Blog]]></title>
+  <title>Category: Security | Gaurav&#39;s Blog</title>
   <link href="https://gnarula.com/categories/security/index.xml" rel="self"/>
   <link href="https://gnarula.com/"/>
-  <updated>2016-06-10T15:27:23+05:30</updated>
+  <updated>2016-06-15T15:41:53+05:30</updated>
   <id>https://gnarula.com/</id>
   <author>
-    <name><![CDATA[{"name"=>"Gaurav Narula", "url"=>"https://gnarula.com", "email"=>"gnarula94@gmail.com"}]]></name>
-    
+    <name>Gaurav Narula</name>
+    <email>gnarula94@gmail.com</email>
   </author>
   <generator uri="https://github.com/recurser/jekyll-plugins">Recurser</generator>
 
   
   <entry>
-    <title type="html"><![CDATA[CSRF Attacks in a nutshell]]></title>
+    <title>CSRF Attacks in a nutshell</title>
     <link href="https://gnarula.com/security/csrf/"/>
     <updated>2016-04-10T13:02:17+05:30</updated>
     <id>https://gnarula.com/security/csrf</id>
