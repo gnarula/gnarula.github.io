@@ -11,7 +11,7 @@
 
   <title>
     
-      GNOME Online Accounts: Extending the ownCloud Provider &middot; Gaurav's Blog
+      Grilo Plugins: ownCloud source &middot; Gaurav's Blog
     
   </title>
 
@@ -123,37 +123,27 @@
 
       <div class="container content">
         <div class="post">
-  <h1 class="post-title">GNOME Online Accounts: Extending the ownCloud Provider</h1>
-  <span class="post-date">07 Jun 2016 |
+  <h1 class="post-title">Grilo Plugins: ownCloud source</h1>
+  <span class="post-date">18 Jun 2016 |
     
     <a href="/categories/gnome">GNOME</a>
     
     <a href="/categories/gsoc">GSoC</a>
     
   </span>
-  <p>GNOME Online Accounts (GOA) has had support for ownCloud since quite some time. As a part of my project, I’ve been extending the ownCloud provider to add support for the Music feature.</p>
+  <p>This week concluded weeks 3-4 of my <a href="https://wiki.gnome.org/Outreach/SummerOfCode/2016/Projects/GauravNarula_MusicOwnCloud">GSoC project</a> on adding ownCloud support to GNOME Music. Carrying on from my previous post, after adding support for ownCloud Music in GOA, I’ve been working on implementing a grilo plugin for the same.</p>
 
-<p><img src="https://i.imgur.com/6MXnHA2.png" alt="GOA ownCloud" /></p>
+<p>To a task that seemed fairly straightforward with ownCloud Music’s implementation of the Ampache API, it suffered a bit of a roadblock since the app didn’t support the Album Artist ID3 tag (<a href="http://help.mp3tag.de/main_tags.html">TPE2</a>). This was crucial since the grilo plugin would be used by gnome-music at a later stage which uses the tag quite often.</p>
 
-<p>ownCloud provides a neat <a href="https://github.com/owncloud/music">music app</a> which allows users to access their music collection, while at the same time, it provides application developers with a rich <a href="https://github.com/ampache/ampache/wiki/XML-API">API</a>. The Ampache API rightly supports authentication and requires a password to be generated which is distinct from the user’s ownCloud credentials.</p>
+<p>There seems to be a bit of an ambiguity around the usage of the Album Artist tag. After digging around a bit, Michael Koby’s <a href="https://mkoby.com/2007/02/18/artist-versus-album-artist/">article</a> on the topic makes it pretty clear. Adding support for the tag in ownCloud music required changing the schema and rewriting a fair bit of the queries. On the frontend of ownCloud’s music app, the albums will now be grouped by Album Artists instead of Track Artists which makes finding albums easier at one place in case they have tracks by different artists. The code for the above changes is being reviewed and can be accessed at <a href="https://github.com/owncloud/music/pull/503">GitHub</a>.</p>
 
-<p><img src="https://i.imgur.com/KGPp3cg.png" alt="ownCloud Music Generate Password" /></p>
+<p><img src="http://i.imgur.com/i6cmW0R.png" alt="Grouping Albums by Album Artist" /></p>
 
-<p>While one can manually generate a password for the Ampache API via ownCloud’s settings, we decided it would be better to automatically generate the password when the user sets up the ownCloud account on GOA for the first time, and store it along with the ownCloud credentials in the Keyring. This meant extending ownCloud’s music app to provide some endpoints for password generation (to be covered in detail in another post).</p>
+<p>Moving on, I was excited to write the <a href="https://bugzilla.gnome.org/show_bug.cgi?id=676366">grilo plugin</a> in LUA. While I didn’t have much experience with the language, it didn’t feel strange at all perhaps because of my familiarity with Python. Kudos to <a href="https://www.youtube.com/watch?v=5uhHkeVpcgo">Tyler Neylon’s</a> screencast on working with the C API and the LUA stack in particular, which immensely helped me in writing some wrapper methods in C.</p>
 
-<p>Since ownCloud’s music app isn’t a part of ownCloud core, there were a few special cases that needed attention:</p>
+<p><img src="http://i.imgur.com/ly5I0md.png" alt="grilo-test-api showing the ownCloud source in action" /></p>
 
-<ul>
-  <li>If the music app isn’t enabled on ownCloud’s end, the music feature is disabled.</li>
-  <li>In case the music app is disabled after the the password has been generated, <a href="https://developer.gnome.org/goa/stable/gdbus-org.gnome.OnlineAccounts.Account.html#gdbus-method-org-gnome-OnlineAccounts-Account.EnsureCredentials">EnsureCredentials</a> would return failure.</li>
-  <li>A new method, RetryFeature will be available on the <a href="https://developer.gnome.org/goa/stable/gdbus-org.gnome.OnlineAccounts.Account.html">Account Interface</a> which would allow the user to enable Music feature at a later time, in case ownCloud’s music app was not available initially.</li>
-</ul>
-
-<p>The code for the above mentioned features is <a href="https://bugzilla.gnome.org/show_bug.cgi?id=753415">being reviewed</a> and should hopefully be merged soon :)</p>
-
-<h2 id="whats-next">What’s next?</h2>
-
-<p>Now that GOA supports storing the Ampache API credentials, we can retrieve and use them for the implementation of a <a href="https://bugzilla.gnome.org/show_bug.cgi?id=676366">grilo plugin</a>. The Lua-factory plugin allows writing Grilo sources in LUA and I’ve recently extended it to support password based GOA accounts. In the coming week, I plan to work on the lua plugin for ownCloud/Ampache.</p>
+<p>Shout out to <a href="http://www.hadess.net/">Bastien Nocera</a> and <a href="http://www.victortoso.com">Victor Toso</a> who helped me all along during the development of the plugin and the required wrapper methods :) Next up, working on queries and moving over to the gnome-music side of things!</p>
 
 </div>
 
@@ -163,9 +153,9 @@
     
       <li>
         <h3>
-          <a href="/gnome/gsoc/grilo-owncloud-source/">
-            Grilo Plugins: ownCloud source
-            <small>18 Jun 2016</small>
+          <a href="/gnome/gsoc/goa-extending-owncloud-provider/">
+            GNOME Online Accounts: Extending the ownCloud Provider
+            <small>07 Jun 2016</small>
           </a>
         </h3>
       </li>

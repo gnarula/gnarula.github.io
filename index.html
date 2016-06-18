@@ -126,6 +126,40 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/gnome/gsoc/grilo-owncloud-source/">
+        Grilo Plugins: ownCloud source
+      </a>
+    </h1>
+
+    <span class="post-date">18 Jun 2016 |
+    
+    <a href="/categories/gnome">GNOME</a>
+    
+    <a href="/categories/gsoc">GSoC</a>
+    
+    </span>
+
+    <p>This week concluded weeks 3-4 of my <a href="https://wiki.gnome.org/Outreach/SummerOfCode/2016/Projects/GauravNarula_MusicOwnCloud">GSoC project</a> on adding ownCloud support to GNOME Music. Carrying on from my previous post, after adding support for ownCloud Music in GOA, I’ve been working on implementing a grilo plugin for the same.</p>
+
+<p>To a task that seemed fairly straightforward with ownCloud Music’s implementation of the Ampache API, it suffered a bit of a roadblock since the app didn’t support the Album Artist ID3 tag (<a href="http://help.mp3tag.de/main_tags.html">TPE2</a>). This was crucial since the grilo plugin would be used by gnome-music at a later stage which uses the tag quite often.</p>
+
+<p>There seems to be a bit of an ambiguity around the usage of the Album Artist tag. After digging around a bit, Michael Koby’s <a href="https://mkoby.com/2007/02/18/artist-versus-album-artist/">article</a> on the topic makes it pretty clear. Adding support for the tag in ownCloud music required changing the schema and rewriting a fair bit of the queries. On the frontend of ownCloud’s music app, the albums will now be grouped by Album Artists instead of Track Artists which makes finding albums easier at one place in case they have tracks by different artists. The code for the above changes is being reviewed and can be accessed at <a href="https://github.com/owncloud/music/pull/503">GitHub</a>.</p>
+
+<p><img src="http://i.imgur.com/i6cmW0R.png" alt="Grouping Albums by Album Artist" /></p>
+
+<p>Moving on, I was excited to write the <a href="https://bugzilla.gnome.org/show_bug.cgi?id=676366">grilo plugin</a> in LUA. While I didn’t have much experience with the language, it didn’t feel strange at all perhaps because of my familiarity with Python. Kudos to <a href="https://www.youtube.com/watch?v=5uhHkeVpcgo">Tyler Neylon’s</a> screencast on working with the C API and the LUA stack in particular, which immensely helped me in writing some wrapper methods in C.</p>
+
+<p><img src="http://i.imgur.com/ly5I0md.png" alt="grilo-test-api showing the ownCloud source in action" /></p>
+
+<p>Shout out to <a href="http://www.hadess.net/">Bastien Nocera</a> and <a href="http://www.victortoso.com">Victor Toso</a> who helped me all along during the development of the plugin and the required wrapper methods :) Next up, working on queries and moving over to the gnome-music side of things!</p>
+
+    
+    
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/gnome/gsoc/goa-extending-owncloud-provider/">
         GNOME Online Accounts: Extending the ownCloud Provider
       </a>
